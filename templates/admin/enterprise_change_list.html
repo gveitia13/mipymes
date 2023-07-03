@@ -1,0 +1,41 @@
+{% extends 'admin/change_list.html' %}
+{% load admin_list %}
+{% block page_actions %}
+    <div class="col-12 col-md-auto d-flex align-items-center justify-content-end page-actions">
+        {% block object-tools %}
+            {% block object-tools-items %}
+                {{ block.super }}
+            {% endblock %}
+        {% endblock %}
+    </div>
+    <div class="col-12 col-md-6 pt-2 text-right">
+        <div class="card">
+            <div class="card-header pb-0 text-center">
+                <span class="card-title text-center">Importar empresas de un excel</span>
+            </div>
+            <div class="card-body py-0">
+                <form method="post" enctype="multipart/form-data" action="{% url 'cargar-empresas' %}">
+                    {% csrf_token %}
+                    <div class="form-row align-items-center">
+                        <div class="col-8 my-1">
+                            <label class="sr-only" for="asdasd">Excel</label>
+                            <input type="file"
+                                   accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                   required class="form-control-file"
+                                   id="asdasd" name="archivo_excel">
+                        </div>
+                        <div class="col-4 my-1 text-right">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block result_list %}
+
+    {{ block.super }}
+{% endblock %}
