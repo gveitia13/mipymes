@@ -67,7 +67,7 @@ JAZZMIN_SETTINGS = {
         "app_user.User": "fas fa-user",
         "auth.Group": "fas fa-users",
     },
-    # "order_with_respect_to": ["app_main.category", 'app_main.language'],
+    "order_with_respect_to": ["main.provincia", 'main.municipio', 'main.sector','main.enterprise'],
 }
 
 CKEDITOR_CONFIGS = {
@@ -138,7 +138,7 @@ WSGI_APPLICATION = 'mipymes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db1.sqlite3',
     }
 }
 
