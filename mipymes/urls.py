@@ -20,16 +20,13 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.shortcuts import redirect
 from django.urls import path, include
 
-from main.views import cargar_empresas, cargar_sectores, cargar_provincias
 from mipymes import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', lambda request: redirect('/admin/')),
-    path('cargar_empresas/', cargar_empresas, name='cargar-empresas'),
-    path('cargar_sectores/', cargar_sectores, name='cargar_sectores'),
-    path('cargar_provincias/', cargar_provincias, name='cargar-provincias'),
-    path('api/', include('main.urls')),
+    path('', include('main.urls')),
+    path('api/', include('main.api.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()

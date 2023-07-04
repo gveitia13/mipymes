@@ -1,10 +1,8 @@
 import json
 from datetime import datetime
 
-from django.shortcuts import render, redirect
-
-# Create your views here.
 import pandas as pd
+from django.shortcuts import redirect
 from django.shortcuts import render
 
 from .models import Enterprise, Sector, Provincia, Municipio, Service, Enlace
