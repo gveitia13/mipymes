@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-#v=cmn9#vkyr6fs5(_n-!)$1)uq$)96i30r=eb)u_c+z)5$n46
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -64,7 +64,7 @@ JAZZMIN_SETTINGS = {
     # "show_ui_builder": True,
     "icons": {
         "auth": "fas fa-users-cog",
-        "app_user.User": "fas fa-user",
+        "auth.User": "fas fa-user",
         "auth.Group": "fas fa-users",
     },
     "order_with_respect_to": ["main.provincia", 'main.municipio', 'main.sector','main.enterprise'],
