@@ -23,7 +23,7 @@ class Enterprise(models.Model):
     actividad = models.CharField('Actividad', max_length=250)
     representante = models.CharField('Representante', max_length=250, null=True, blank=True)
     telefono = models.CharField('Teléfono', max_length=250, null=True, blank=True)
-    correo = models.EmailField('Correo', max_length=250, null=True, blank=True)
+    correo = models.CharField('Correo', max_length=250, null=True, blank=True)
     fecha_aprobacion = models.DateField('Fecha de aprobación', null=True, blank=True)
     is_active = models.BooleanField('Aprobado', default=False)
     sectores = models.ManyToManyField(Sector, related_name='sectores', null=True, blank=True)
@@ -109,7 +109,7 @@ class Provincia(models.Model):
 
 
 class Municipio(models.Model):
-    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE)
+    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='municipios')
     nombre = models.CharField('Nombre', max_length=250, )
 
     def __str__(self): return self.nombre

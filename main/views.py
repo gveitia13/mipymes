@@ -15,7 +15,6 @@ def cargar_empresas(request):
         empresas = Enterprise.objects.all()
         all_municipios = Municipio.objects.all()
         for index, row in data.iterrows():
-            print(row['municipio'])
             try:
                 municipio = all_municipios.get(nombre__iexact=row['municipio'])
             except:
@@ -24,33 +23,55 @@ def cargar_empresas(request):
                     if m.provincia.nombre.__contains__(row['provincia']):
                         municipio = m
                         break
+            try:
+                representante = row.get('representante', '')
+            except:
+                representante = ''
+            print(representante)
+            try:
+                telefono = row.get('telefono', '')
+            except:
+                telefono = ''
+            try:
+                correo = row.get('correo', '')
+            except:
+                correo = ''
+            fecha_aprobacion = row.get('fecha_aprobacion', '')
 
-            representante = row.get('representante', None)
-            telefono = row.get('telefono', None)
-            correo = row.get('correo', None)
-            fecha_aprobacion = row.get('fecha_aprobacion', None)
             if fecha_aprobacion:
                 try:
                     fecha_aprobacion = datetime.strptime(fecha_aprobacion, '%Y-%m-%d %H:%M:%S')
                 except:
-                    fecha_aprobacion = None
+                    fecha_aprobacion = ''
 
             if empresas.filter(nombre=row['nombre']).exists():
                 empresa = empresas.get(nombre=row['nombre'])
                 empresa.nombre = row['nombre']
                 empresa.municipio = municipio
                 empresa.actividad = row['actividad']
-                empresa.representante = representante
-                empresa.telefono = telefono
-                empresa.correo = correo
-                empresa.fecha_aprobacion = fecha_aprobacion
+                if representante and representante != 'nan':
+                    empresa.representante = representante
+                if telefono and telefono != 'nan':
+                    empresa.telefono = telefono
+                if correo and correo != 'nan':
+                    empresa.correo = correo
+                if fecha_aprobacion and fecha_aprobacion != 'nan':
+                    empresa.fecha_aprobacion = fecha_aprobacion
                 empresa.is_active = True
                 empresa.save()
             else:
                 empresa = Enterprise.objects.create(nombre=row['nombre'], municipio=municipio,
-                                                    actividad=row['actividad'], representante=representante,
-                                                    telefono=telefono, correo=correo, fecha_aprobacion=fecha_aprobacion,
-                                                    is_active=True, )
+                                                    actividad=row['actividad'], is_active=True, )
+                if representante and representante != 'nan':
+                    empresa.representante = representante
+                if telefono and telefono != 'nan':
+                    empresa.telefono = telefono
+                if correo and correo != 'nan':
+                    empresa.correo = correo
+                if fecha_aprobacion and fecha_aprobacion != 'nan':
+                    empresa.fecha_aprobacion = fecha_aprobacion
+                empresa.save()
+
             servicios = json.loads(row['servicios'])
             for s in servicios:
                 Service.objects.create(servicio=s, enterprise=empresa)
