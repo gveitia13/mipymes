@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'ckeditor',
+    'drf_yasg',
+    'coreapi',
     'main',
 ]
 
