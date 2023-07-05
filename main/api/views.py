@@ -1,4 +1,4 @@
-from rest_framework import generics, viewsets, filters, status
+from rest_framework import viewsets, filters, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -49,7 +49,6 @@ class MunicipioVS(viewsets.ReadOnlyModelViewSet):
 
 
 class AssignSectorAV(APIView):
-
     def put(self, request: Request, pk):
         try:
             enterprise = Enterprise.objects.get(pk=pk)
