@@ -1,7 +1,8 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from main.api.views import EnterpriseVS, SectorVS, EnlaceVS, ServiceVS, PublicidadVS, ProvinciaVS, MunicipioVS
+from main.api.views import EnterpriseVS, SectorVS, EnlaceVS, ServiceVS, PublicidadVS, ProvinciaVS, MunicipioVS, \
+    AssignSectorAV
 
 router = DefaultRouter()
 router.register('empresa', EnterpriseVS, basename='empresa')
@@ -14,4 +15,5 @@ router.register('municipio', MunicipioVS, basename='municipio')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('empresa-sector/<int:pk>/', AssignSectorAV.as_view(), name='assign-sector')
 ]

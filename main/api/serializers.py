@@ -43,13 +43,37 @@ class ProvinciaSerializer(serializers.ModelSerializer):
 
 
 class EnterpriseSerializer(serializers.ModelSerializer):
-    sectores = SectorSerializer(many=True, allow_null=True, required=False)
-    servicios = ServiceSerializer(many=True, allow_null=True, required=False, )
-    enlaces = EnlaceSerializer(many=True, allow_null=True, required=False)
-    publicidades = PublicidadSerializer(many=True, allow_null=True, required=False)
+    sectores = SectorSerializer(many=True, allow_null=True, required=False,)
+    servicios = ServiceSerializer(many=True, allow_null=True, required=False, read_only=True)
+    enlaces = EnlaceSerializer(many=True, allow_null=True, required=False, read_only=True)
+    publicidades = PublicidadSerializer(many=True, allow_null=True, required=False, read_only=True)
     municipio_object = serializers.SerializerMethodField(read_only=True, allow_null=True, required=False)
     # provincia = serializers.CharField(source='municipio.provincia')
     provincia_object = serializers.SerializerMethodField(read_only=True, allow_null=True, required=False)
+
+    def create(self, validated_data):
+        sectores_data = validated_data.pop('sectores')
+        enterprise = Enterprise.objects.create(**validated_data)
+        for sector in sectores_data:
+            s = Sector.objects.create(**sector)
+            enterprise.sectores.add(s)
+        return enterprise
+
+    def update(self, instance, validated_data):
+        sectores_data = validated_data.pop('sectores', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if sectores_data is not None:
+            instance.sectores.all().delete()
+            for sector in sectores_data:
+                print(sector)
+                if sector.id:
+                    instance.sectores.add(Sector.objects.get(pk=sector.id))
+                else:
+                    s = Sector.objects.create(**sector)
+                    instance.sectores.add(s)
+        instance.save()
+        return instance
 
     def get_municipio_object(self, object):
         serializer = MunicipioSerializer(instance=object.municipio).data

@@ -1,4 +1,7 @@
-from rest_framework import generics, viewsets, filters
+from rest_framework import generics, viewsets, filters, status
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from main.api.pagination import EnterprisePaginator
 from main.api.serializers import EnterpriseSerializer, SectorSerializer, EnlaceSerializer, ServiceSerializer, \
@@ -43,3 +46,32 @@ class ProvinciaVS(viewsets.ReadOnlyModelViewSet):
 class MunicipioVS(viewsets.ReadOnlyModelViewSet):
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
+
+
+class AssignSectorAV(APIView):
+
+    def put(self, request: Request, pk):
+        try:
+            enterprise = Enterprise.objects.get(pk=pk)
+            de_serializer = SectorSerializer(data=request.data, many=True)
+            if de_serializer.is_valid():
+                print('')
+
+            for s in enterprise.sectores.all():
+                enterprise.sectores.remove(s)
+
+            for sector in de_serializer.data:
+                dict_sector = dict(sector)
+                if dict_sector.get('id'):
+                    enterprise.sectores.add(Sector.objects.get(pk=dict_sector.get('id')))
+                else:
+                    try:
+                        s = Sector.objects.create(sector=dict_sector.get('sector'))
+                        enterprise.sectores.add(s)
+                    except:
+                        return Response({'error': 'Ya existe un sector con este nombre'},
+                                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            return Response(EnterpriseSerializer(instance=enterprise).data, status=status.HTTP_200_OK)
+        except Enterprise.DoesNotExist:
+            return Response({'error': f'No se encontró empresa con id {pk}'}, status=status.HTTP_404_NOT_FOUND)
