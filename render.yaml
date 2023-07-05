@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: mipymes
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn mipymes.wsgi:application"
