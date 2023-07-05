@@ -38,6 +38,7 @@ class EnterpriseAdmin(admin.ModelAdmin):
     list_editable = ('is_active',)
     list_per_page = 15
     search_fields = ('nombre',)
+    list_filter = ('is_active', 'municipio')
     inlines = [PublicidadInline, ServiceInline, EnlaceInline]
     filter_horizontal = ['sectores', ]
     fieldsets = [
