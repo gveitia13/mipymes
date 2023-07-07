@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'ckeditor',
     'drf_yasg',
+    'solo',
     'coreapi',
     'main',
 ]
@@ -69,7 +70,7 @@ JAZZMIN_SETTINGS = {
         "auth.User": "fas fa-user",
         "auth.Group": "fas fa-users",
     },
-    "order_with_respect_to": ["main.provincia", 'main.municipio', 'main.sector','main.enterprise'],
+    "order_with_respect_to": ['main.config', "main.provincia", 'main.municipio', 'main.sector', 'main.enterprise'],
 }
 
 CKEDITOR_CONFIGS = {
@@ -193,7 +194,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'godjango.automail@gmail.com'
-EMAIL_HOST_PASSWORD = 'bakhyhnfmfihhqvg'  # past the key or password app here
+EMAIL_HOST_USER = 'zigurat.tech@gmail.com'
+EMAIL_HOST_PASSWORD = 'fczzagrrcbqmqbgq'  # past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

@@ -1,7 +1,9 @@
+from django.core.mail import send_mail
 from django.forms import model_to_dict
 from rest_framework import serializers
 
-from main.models import Enterprise, Sector, Service, Enlace, Publicidad, Provincia, Municipio, PublicidadGeneral
+from main.models import Enterprise, Sector, Service, Enlace, Publicidad, Provincia, Municipio, PublicidadGeneral, Config
+from mipymes import settings
 
 
 class SectorSerializer(serializers.ModelSerializer):
@@ -79,6 +81,17 @@ class EnterpriseSerializer(serializers.ModelSerializer):
     #                 instance.sectores.add(s)
     #     instance.save()
     #     return instance
+    def create(self, validated_data):
+        a = super().create(validated_data)
+        if Config.objects.exists():
+            try:
+                send_mail('Nueva empresa desde la APP',
+                          f'La empresa "{validated_data["nombre"]}" ha sido creada desde la APP',
+                          settings.EMAIL_HOST_USER,
+                          [Config.objects.first().email])
+            except Exception as e:
+                print('Explotó el correo. Excepción: ' + str(e))
+        return a
 
     def get_municipio_object(self, object):
         serializer = MunicipioSerializer(instance=object.municipio).data

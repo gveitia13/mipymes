@@ -1,9 +1,10 @@
 from django.contrib import admin
+from solo.admin import SingletonModelAdmin
 
 from main.models import *
 
 
-class ServiceInline(admin.TabularInline):
+class ServiceInline(admin.StackedInline):
     model = Service
     # exclude = ['enterprise']
     extra = 3
@@ -76,5 +77,7 @@ class PublicidadGeneralAdmin(admin.ModelAdmin):
     list_display = ('get_thumbnail', 'get_image', 'link')
     list_display_links = list_display
 
+# class ConfigAdmin(SingletonModelAdmin):
 
 admin.site.register(Sector, SectorAdmin)
+admin.site.register(Config, SingletonModelAdmin)

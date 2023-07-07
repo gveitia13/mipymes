@@ -1,6 +1,7 @@
 from ckeditor.fields import RichTextField
 from django.db import models
 from django.utils.safestring import mark_safe
+from solo.models import SingletonModel
 
 
 class Sector(models.Model):
@@ -140,3 +141,12 @@ class PublicidadGeneral(models.Model):
     get_image.short_description = 'Imagen'
 
     def __str__(self): return self.link
+
+
+class Config(SingletonModel):
+    email = models.EmailField('Correo')
+
+    class Meta:
+        verbose_name = 'Configuración'
+
+    def __str__(self): return self.email
