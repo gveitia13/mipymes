@@ -116,3 +116,15 @@ class Municipio(models.Model):
 
     class Meta:
         ordering = ('nombre',)
+
+
+class PublicidadGeneral(models.Model):
+    thumbnail = models.ImageField('Thumbnail', null=True, blank=True, upload_to='publicidad/thumbnail/')
+    image = models.ImageField('Imagen', upload_to='publicidad/imagen/')
+    link = models.URLField('Link')
+
+    class Meta:
+        verbose_name = 'Publicidad general'
+        verbose_name_plural = 'Publicidades generales'
+
+    def __str__(self): return self.link

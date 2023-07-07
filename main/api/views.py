@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 
 from main.api.pagination import EnterprisePaginator
 from main.api.serializers import EnterpriseSerializer, SectorSerializer, EnlaceSerializer, ServiceSerializer, \
-    PublicidadSerializer, ProvinciaSerializer, MunicipioSerializer
-from main.models import Enterprise, Sector, Enlace, Service, Publicidad, Provincia, Municipio
+    PublicidadSerializer, ProvinciaSerializer, MunicipioSerializer, PublicidadGeneralSerializer
+from main.models import Enterprise, Sector, Enlace, Service, Publicidad, Provincia, Municipio, PublicidadGeneral
 
 
 class EnterpriseVS(viewsets.ModelViewSet):
@@ -33,9 +33,14 @@ class ServiceVS(viewsets.ModelViewSet):
     serializer_class = ServiceSerializer
 
 
-class PublicidadVS(viewsets.ModelViewSet):
+class PublicidadVS(viewsets.ReadOnlyModelViewSet):
     queryset = Publicidad.objects.all()
     serializer_class = PublicidadSerializer
+
+
+class PublicidadGeneralVS(viewsets.ReadOnlyModelViewSet):
+    queryset = PublicidadGeneral.objects.all()
+    serializer_class = PublicidadGeneralSerializer
 
 
 class ProvinciaVS(viewsets.ReadOnlyModelViewSet):
