@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import viewsets, filters, status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -10,12 +12,22 @@ from main.models import Enterprise, Sector, Enlace, Service, Publicidad, Provinc
 
 
 class EnterpriseVS(viewsets.ModelViewSet):
-    queryset = Enterprise.objects.filter(is_active=True)
+    queryset = Enterprise.objects.filter(is_active=True, )
     serializer_class = EnterpriseSerializer
     pagination_class = EnterprisePaginator
     filter_backends = [filters.SearchFilter, filters.OrderingFilter, ]
-    search_fields = ['nombre', 'representante']
+    search_fields = ['nombre', 'representante', ]
     ordering_fields = ['nombre', 'is_active', 'fecha_aprobacion']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.query_params.get('provincia'):
+            queryset = queryset.filter(municipio__provincia_id=self.request.query_params.get('provincia'))
+        if self.request.query_params.get('municipio'):
+            queryset = queryset.filter(municipio_id=self.request.query_params.get('municipio'))
+        if self.request.query_params.get('sector'):
+            queryset = queryset.filter(sectores__in=self.request.query_params.get('sector'))
+        return queryset
 
 
 class SectorVS(viewsets.ReadOnlyModelViewSet):

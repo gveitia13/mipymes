@@ -71,4 +71,10 @@ class MunicipioAdmin(admin.ModelAdmin):
     list_filter = ('provincia',)
 
 
+@admin.register(PublicidadGeneral)
+class PublicidadGeneralAdmin(admin.ModelAdmin):
+    list_display = ('get_thumbnail', 'get_image', 'link')
+    list_display_links = list_display
+
+
 admin.site.register(Sector, SectorAdmin)

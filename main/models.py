@@ -107,6 +107,9 @@ class Provincia(models.Model):
 
     def __str__(self): return self.nombre
 
+    class Meta:
+        ordering = ('nombre',)
+
 
 class Municipio(models.Model):
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='municipios')
@@ -126,5 +129,14 @@ class PublicidadGeneral(models.Model):
     class Meta:
         verbose_name = 'Publicidad general'
         verbose_name_plural = 'Publicidades generales'
+
+    def get_thumbnail(self):
+        return mark_safe(f'<img src="{self.thumbnail.url}" height="40"/>') if self.thumbnail else ''
+
+    def get_image(self):
+        return mark_safe(f'<img src="{self.image.url}" height="40"/>')
+
+    get_thumbnail.short_description = 'Thumbnail'
+    get_image.short_description = 'Imagen'
 
     def __str__(self): return self.link
