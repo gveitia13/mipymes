@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from main.api.views import EnterpriseVS, SectorVS, EnlaceVS, ServiceVS, PublicidadVS, ProvinciaVS, MunicipioVS, \
-    AssignSectorAV, PublicidadGeneralVS
+    AssignSectorAV, PublicidadGeneralVS, ContactoVS
 
 router = DefaultRouter()
 router.register('empresa', EnterpriseVS, basename='empresa')
@@ -13,6 +13,7 @@ router.register('publicidad', PublicidadVS, basename='publicidad')
 router.register('provincia', ProvinciaVS, basename='provincia')
 router.register('municipio', MunicipioVS, basename='municipio')
 router.register('publicidad-general', PublicidadGeneralVS, basename='publicidad-general')
+router.register('contacto', ContactoVS, basename='contacto')
 
 urlpatterns = [
     path('', include(router.urls)),

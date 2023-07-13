@@ -2,7 +2,8 @@ from django.core.mail import send_mail
 from django.forms import model_to_dict
 from rest_framework import serializers
 
-from main.models import Enterprise, Sector, Service, Enlace, Publicidad, Provincia, Municipio, PublicidadGeneral, Config
+from main.models import Enterprise, Sector, Service, Enlace, Publicidad, Provincia, Municipio, PublicidadGeneral, \
+    Config, Contacto
 from mipymes import settings
 
 
@@ -39,6 +40,12 @@ class PublicidadGeneralSerializer(serializers.ModelSerializer):
 class MunicipioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Municipio
+        fields = '__all__'
+
+
+class ContactoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contacto
         fields = '__all__'
 
 
