@@ -74,8 +74,9 @@ class MunicipioAdmin(admin.ModelAdmin):
 
 @admin.register(PublicidadGeneral)
 class PublicidadGeneralAdmin(admin.ModelAdmin):
-    list_display = ('get_thumbnail', 'get_image', 'link')
+    list_display = ('get_image', 'link')
     list_display_links = list_display
+
 
 # class ConfigAdmin(SingletonModelAdmin):
 
