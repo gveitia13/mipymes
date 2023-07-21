@@ -83,7 +83,7 @@ class Enlace(models.Model):
 
 class Publicidad(models.Model):
     enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, related_name='publicidades')
-    image = models.ImageField('Imagen', upload_to='publicidad/imagen/')
+    image = models.ImageField('Imagen', upload_to='publicidad/imagen/', help_text='Relación aspecto: Cuadrada',)
     link = models.URLField('Link')
 
     class Meta:
@@ -122,7 +122,7 @@ class Municipio(models.Model):
 
 
 class PublicidadGeneral(models.Model):
-    image = models.ImageField('Imagen', upload_to='publicidad/imagen/')
+    image = models.ImageField('Imagen', upload_to='publicidad/imagen/', help_text='Relación aspecto: Vertical')
     link = models.URLField('Link')
 
     class Meta:
