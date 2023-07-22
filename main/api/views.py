@@ -1,9 +1,13 @@
 import json
 
+from coreapi.compat import force_text
+from django.db.models import Q, F, Func
+from django.db.models.functions import Lower
 from rest_framework import viewsets, filters, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from unidecode import unidecode
 
 from main.api.pagination import EnterprisePaginator
 from main.api.serializers import EnterpriseSerializer, SectorSerializer, EnlaceSerializer, ServiceSerializer, \
@@ -12,12 +16,16 @@ from main.models import Enterprise, Sector, Enlace, Service, Publicidad, Provinc
     Contacto
 
 
+class Unidecode(Func):
+    function = 'REPLACE'
+    template = "UNIDECODE(LOWER(%(expressions)s))"
+
+
 class EnterpriseVS(viewsets.ModelViewSet):
     queryset = Enterprise.objects.filter(is_active=True, )
     serializer_class = EnterpriseSerializer
     pagination_class = EnterprisePaginator
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter, ]
-    search_fields = ['nombre', 'representante', ]
+    filter_backends = [filters.OrderingFilter, ]
     ordering_fields = ['nombre', 'is_active', 'fecha_aprobacion']
 
     def get_queryset(self):
@@ -28,6 +36,14 @@ class EnterpriseVS(viewsets.ModelViewSet):
             queryset = queryset.filter(municipio_id=self.request.query_params.get('municipio'))
         if self.request.query_params.get('sector'):
             queryset = queryset.filter(sectores__in=self.request.query_params.get('sector'))
+        if self.request.query_params.get('search'):
+            search_query = self.request.query_params.get('search', None)
+            search_terms = search_query.split(' ')
+            for search_term in search_terms:
+                search_term = unidecode(force_text(search_term)).lower()
+                listado = list(filter(lambda e: str(e.get_nombre_al_berro()).__contains__(search_term), queryset))
+                claves_primarias = [obj.pk for obj in listado]
+                queryset = queryset.filter(pk__in=claves_primarias)
         return queryset
 
 

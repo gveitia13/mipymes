@@ -1,7 +1,9 @@
 from ckeditor.fields import RichTextField
+from coreapi.compat import force_text
 from django.db import models
 from django.utils.safestring import mark_safe
 from solo.models import SingletonModel
+from unidecode import unidecode
 
 
 class Sector(models.Model):
@@ -28,6 +30,9 @@ class Enterprise(models.Model):
     fecha_aprobacion = models.DateField('Fecha de aprobación', null=True, blank=True)
     is_active = models.BooleanField('Aprobado', default=False)
     sectores = models.ManyToManyField(Sector, related_name='sectores', null=True, blank=True)
+
+    def get_nombre_al_berro(self):
+        return unidecode(force_text(str(self.nombre))).lower()
 
     class Meta:
         verbose_name = 'Empresa'
@@ -83,7 +88,7 @@ class Enlace(models.Model):
 
 class Publicidad(models.Model):
     enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, related_name='publicidades')
-    image = models.ImageField('Imagen', upload_to='publicidad/imagen/', help_text='Relación aspecto: Cuadrada',)
+    image = models.ImageField('Imagen', upload_to='publicidad/imagen/', help_text='Relación aspecto: Cuadrada', )
     link = models.URLField('Link')
 
     class Meta:
